@@ -1,6 +1,7 @@
 import { ModuleOptions } from "webpack";
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BuildOptions } from "./types/types";
+import { buildBabelLoader } from "./babel/buildBabelLoader";
 
 export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
     const isDev = options.mode === 'development';
@@ -47,15 +48,29 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
         // test: /\.tsx?$/,
         // use: 'ts-loader',
         // exclude: /node_modules/,
-        test: /\.(js|jsx)$/, // Регулярное выражение для файлов .js и .jsx
+        test: /\.(js|jsx|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'] // Пресеты для Babel
-          }
+          // options from babel.config.json
         }
       }
+
+     const babelLoader = buildBabelLoader();
+      
+    const tsLoader = {
+      test: /\.tsx?$/,
+      exclude: /node_modules/,
+      use: [
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            plugins: [isDev && require.resolve('react-refresh/babel')].filter(Boolean),
+          }
+        }
+      ]
+    } 
     return [
         assteLoader,
         scssLoader,

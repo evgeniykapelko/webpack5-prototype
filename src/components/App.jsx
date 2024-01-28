@@ -12,6 +12,7 @@ export const App = () => {
 
   return (
     <div>
+      <h1>PLATFORM : {__PLATFORM__}</h1>
       <div>
         <img src={imagePng} height={120} alt="" />
         <img src={imageJpg} height={120} alt="" />
