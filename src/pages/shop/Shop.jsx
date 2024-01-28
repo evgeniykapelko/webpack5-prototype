@@ -3,7 +3,7 @@ import React from 'react'
 const Shop = () => {
   return (
     <div> 
-      {/* lorem*100 */}
+      lorem*100
     </div>
   )
 }
